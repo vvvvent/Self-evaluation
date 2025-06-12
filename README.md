@@ -11,35 +11,134 @@
 - 创建数据库mydb。
 成果：
 - 成功地下载DataGrip、Postgres；
-- 
-- 创建了数据库mydb，因为环境配置问题在DataGrip连接不到数据库。（该问题在第四周实验课求助助教和老师帮忙解决了。）
-### 第二周
-
-### 第三周 
-
+photo
+- 创建了数据库mydb，因为环境配置问题在DataGrip连接不到数据库。（该问题在第五周实验课求助助教和老师帮忙解决了。）
+### 第二周：深入了解数据库
+学习内容：
+- 什么是数据库；
+- 数据库的应用；
+- 数据库的在应用中优点；
+- 数据库语言、数据视图。
+成果：
+- 明确数据库是按照数据结构来组织、存储和管理数据的仓库，掌握其结构化、集成化、共享性等核心特征，能区分数据库与普通文件存储的差异。
+- 熟悉数据库在金融交易记录、电商商品管理、医疗病历存储、社交平台用户数据管理等场景的应用，理解其在不同行业的适配性与重要性。
+- 认识到数据库可有效减少数据冗余、保障数据一致性与完整性、实现多用户共享访问、通过权限控制提升数据安全性，以及利用索引等技术优化数据查询效率。
+- 掌握 SQL 语言进行数据定义（DDL）、数据操纵（DML）、数据控制（DCL）的基本操作；理解外模式、模式、内模式三层数据视图的作用，以及视图如何实现数据的逻辑独立性与安全性。
+### 第三周：关系模型
+学习内容：
+- 关系数据库；
+- 码（主码、超码、候选码、外码）；
+- 关系代数。
+成果：
+- 以二维表组织数据，具结构化、共享性等特性，区别于非关系型数据库。
+- 主码唯一标识元组，候选码是主码备选，超码包含候选码，外码用于表间关联；学会建立表，标注主码。
+```
+  CREATE TABLE instructure (
+    ID INT PRIMARY KEY,
+    name VARCHAR(50),
+    dept_name VARCHAR(50),
+    salary DECIMAL(10, 2),
+);
+```
+- 掌握选择、投影、连接等基本运算，用于数据查询与处理。
 ### 第四周
+学习内容：
+- 基本类型（字符、数）
+- 定义关系（creat table）
+- 查询关系（select）
+- 更名运算、排序子句
+成果：
+- 掌握字符型、数值型等基础数据类型，明确其存储格式与适用场景。
+```  
+int：整数类型；
 
-### 第五周
+smallint：小整数整形；
 
-### 第六周
+numeric(p, d)：定点数，有p为数字，小数点右边有d位；
 
-### 第七周
+float(n)：精度至少为n位的浮点数；
 
+real, double precision：浮点数与双精度浮点数。
+```
+- 熟练使用CREATE TABLE语句定义表结构，包括字段名、数据类型，实现数据结构化存储。
+- 运用SELECT语句完成单表数据查询。
+```
+select name from instructor;
+select distinct dept_name from instructor;
+```
+在查询的时候经常忘记要去除重复！
+- 利用排序子句（ORDER BY）按指定规则对查询结果排序。
+```
+select *
+from instructor
+order by salary desc, name asc;
+```
+desc是降序；asc是升序。
+### 第五周：环境搭建（实验课）
+学习内容：
+- 连接数据库，执行 SQL 文件
+- 字符串相关操作
+- 集合操作
+成果：
+- 由于对MacOS系统的不熟悉，导致花费了大量的时间在连接数据库上，好在最后解决了。
+photo
+- 使用SQL字符串函数（CONCAT、SUBSTRING）处理文本数据，实现模糊查询、格式转换。
+- 运用UNION、INTERSECT、MINUS（并、交、差）集合操作符合并或筛选多表查询结果，保证数据一致性与完整性。
+### 第六周：空值和聚合查询
+学习内容：
+- null值的处理
+- 聚集函数、分组聚集
+- in, not in, > some, > al
+成果：
+- 掌握IS NULL/IS NOT NULL判断空值，能用COALESCE/NULLIF函数处理空值场景。
+```
+SELECT * FROM instructor
+WHERE (salary > 80000) IS UNKNOWN;
+SELECT * FROM instructor
+WHERE (salary > 80000) IS NOT UNKNOWN;
+```
+SQL还支持使用is unknown对布尔结果进行测试：
+- 使用COUNT/SUM/AVG等聚集函数，结合GROUP BY实现分组统计，配合HAVING过滤分组结果。
+```
+SELECT dept_name, count (DISTINCT instructor.id)
+FROM instructor, teaches
+WHERE instructor.id = teaches.id
+AND semester = 'Spring'
+AND year = 2018
+GROUP BY dept_name; 24
+```
+在很多场景下，GROUP BY的查询是不合法的。
+- 用IN/NOT IN匹配集合元素，通过> SOME（大于任一）、> ALL（大于所有）实现多值条件筛选。
+### 第七周：修改数据库
+学习内容：
+- 增、删、改
+- DDL（修改关系）
+- 
+成果：
 ### 第八周
-
+学习内容：
+成果：
 ### 第九周
-
+学习内容：
+成果：
 ### 第十周
-
+学习内容：
+成果：
 ### 第十一周
-
+学习内容：
+成果：
 ### 第十二周
-
+学习内容：
+成果：
 ### 第十三周
-
+学习内容：
+成果：
 ### 第十四周
-
+学习内容：
+成果：
 ### 第十五周
+学习内容：
+成果：
 
 ## 2.作业与随堂测试（20/20）
   
