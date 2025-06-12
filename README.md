@@ -43,10 +43,10 @@ photo
 - 掌握选择、投影、连接等基本运算，用于数据查询与处理。
 ### 第四周
 学习内容：
-- 基本类型（字符、数）
-- 定义关系（creat table）
-- 查询关系（select）
-- 更名运算、排序子句
+- 基本类型（字符、数）；
+- 定义关系（creat table）；
+- 查询关系（select）；
+- 更名运算、排序子句。
 成果：
 - 掌握字符型、数值型等基础数据类型，明确其存储格式与适用场景。
 ```  
@@ -76,9 +76,9 @@ order by salary desc, name asc;
 desc是降序；asc是升序。
 ### 第五周：环境搭建（实验课）
 学习内容：
-- 连接数据库，执行 SQL 文件
-- 字符串相关操作
-- 集合操作
+- 连接数据库，执行 SQL 文件；
+- 字符串相关操作；
+- 集合操作。
 成果：
 - 由于对MacOS系统的不熟悉，导致花费了大量的时间在连接数据库上，好在最后解决了。
 photo
@@ -86,9 +86,9 @@ photo
 - 运用UNION、INTERSECT、MINUS（并、交、差）集合操作符合并或筛选多表查询结果，保证数据一致性与完整性。
 ### 第六周：空值和聚合查询
 学习内容：
-- null值的处理
-- 聚集函数、分组聚集
-- in, not in, > some, > al
+- null值的处理；
+- 聚集函数、分组聚集；
+- in, not in, > some, > al。
 成果：
 - 掌握IS NULL/IS NOT NULL判断空值，能用COALESCE/NULLIF函数处理空值场景。
 ```
@@ -111,35 +111,172 @@ GROUP BY dept_name; 24
 - 用IN/NOT IN匹配集合元素，通过> SOME（大于任一）、> ALL（大于所有）实现多值条件筛选。
 ### 第七周：修改数据库
 学习内容：
-- 增、删、改
-- DDL（修改关系）
-- 
+- 增、删、改；
+- DDL（修改关系）；
+- SQL排名。
 成果：
-### 第八周
+- 用INSERT、DELETE、UPDATE语句进行数据增删改，准确控制数据变化范围。
+- 掌握DDL语句（如ALTER TABLE），可修改表结构、添加或删除列、调整约束条件，适应业务需求变更。
+```
+ALTER TABLE products ADD COLUMN description text;
+```
+新增属性
+- 运用RANK()、DENSE_RANK()、ROW_NUMBER()等窗口函数实现数据排名，支持按特定字段进行升降序排名展示。
+```
+SELECT id, salary FROM instructor
+ORDER BY salary DESC;
+```
+按照工资的降序进行排序
+### 第八周：中级 SQL
 学习内容：
+- 连接；
+- 完整性约束；
+- 数据视图。
 成果：
-### 第九周
+- 掌握连接类型和连接条件
+```
+连接类型 (join types)：
+• inner join
+• left outer join
+• right outer join
+• full outer join
+连接条件 (join conditions)：
+• natural join
+• on <predicate>
+• using (A1, A2, ..., An)
+```
+- 使用内连接、外连接、交叉连接等操作，实现多表数据关联查询，获取复杂业务场景所需的整合数据。
+##### 默认join是inner有left/right/full，肯定是outernatural join是连接的条件，而不是类型
+- 掌握实体完整性、参照完整性和用户定义完整性的约束方法，通过主键、外键、CHECK 等语句保障数据准确性与一致性。
+- 学会创建和使用数据视图，实现数据的逻辑独立性，简化复杂查询，并通过视图权限控制增强数据安全性。
+### 第九周:高级 SQL（1）
 学习内容：
+- 高级数据类型（时间和日期）；
+- 类型转换；
+- 授权。
 成果：
-### 第十周
-学习内容：
-成果：
-### 第十一周
-学习内容：
-成果：
-### 第十二周
-学习内容：
-成果：
-### 第十三周
-学习内容：
-成果：
-### 第十四周
-学习内容：
-成果：
-### 第十五周
-学习内容：
-成果：
+- 使用时间和日期类型（如DATE、TIME、TIMESTAMP）存储与处理时间序列数据，掌握日期函数实现数据筛选与计算。
+```
+SELECT current_date, current_time, current_timestamp;
+SELECT current_time at time zone 'CCT';
+SELECT current_time at time zone 'Asia/Shanghai';
+SELECT CAST('2008-08-08' AS date);
+SELECT date '2008/08/08';
+```
+实用的时间相关函数
+- 通过显式（CAST、CONVERT）和隐式类型转换处理不同数据类型间的兼容性问题。
+- 运用GRANT、REVOKE语句实现用户权限的精准分配与回收，保障数据库操作的安全性与合规性。
+```
+GRANT SELECT
+ON department
+TO lilei;
+```
+##### GRANT < 权限列表 >; ON < 关系或视图名 > ;TO < 用户或角色 >。
 
+### 第十周：高级 SQL（2）
+学习内容：
+- 函数与过程；
+- 动态SQL；
+- SQL注入。
+成果：
+- 掌握自定义函数和存储过程的编写，实现复杂业务逻辑封装与复用。
+```
+CREATE FUNCTION calculate_discount(price DECIMAL) 
+RETURNS DECIMAL AS $$
+BEGIN
+    RETURN price * 0.9;
+END;
+$$ LANGUAGE plpgsql;
+```
+创建了一个简单函数
+- 学会使用动态 SQL 拼接执行语句，灵活应对参数可变的查询需求。
+- 理解了SQL注入原理，掌握预编译语句、参数化查询等防护手段。
+##### 使用简单的字符串拼接构造的SQL语句有SQL注入的风险！可以使用ORM或PreparedStatement避免这个问题
+
+### 第十一周:ER 模型
+学习内容：
+- E-R 模型；
+- 将E-R图转化成关系模式；
+- E-R 模型的替代品（如UML图）。
+成果：
+- 运用E-R模型分析实体、属性及联系，能通过矩形、菱形、椭圆等图形符号准确表达数据结构与业务逻辑。
+学生-考试（Student–Exam）多对多关系转换为关系表：
+```
+CREATE TABLE Student_Exams (
+    student_id INT,
+    exam_id INT,
+    PRIMARY KEY (student_id, exam_id),
+    FOREIGN KEY (student_id) REFERENCES Students(ID),
+    FOREIGN KEY (exam_id) REFERENCES Exams(ID)
+);
+```
+- 掌握将E-R图转化为关系模式的规则，包括实体集、联系集的表结构设计，以及主码、外码的确定。
+根据题目要求做的ER图：
+photo
+- 了解UML图等替代工具的特点，对比其与E-R模型在数据库设计中的适用场景。
+### 第十二周:关系数据库范式
+学习内容：
+- 模式分解；
+- 函数依赖；
+- BCNF, 3NF。
+成果：
+- 掌握模式分解的无损连接和保持函数依赖原则，能将复杂关系模式拆解为多个子模式，优化数据库结构。
+- 识别数据间的函数依赖关系（如完全依赖、部分依赖、传递依赖），为模式设计与优化提供理论依据。
+- 熟练运用3NF和BCNF范式规则，消除数据冗余与更新异常，确保关系模式满足规范化要求。
+3NF的定义
+```
+具有函数依赖集F的关系模式R属于3NF的条件是，对F中
+所有形如α → β的函数依赖，下面至少一个成立：
+• α→ β是平凡的函数依赖
+• α是 R的一个超码
+• β− α的每个属性都属于R的某个候选码
+```
+### 第十三周:存储、索引、查询及事务（上）
+学习内容：
+- 存储；
+- 索引；
+- 事务。
+成果：
+- 掌握数据库存储结构（如数据页、段表空间），了解数据物理存储与逻辑结构的映射关系，优化存储效率。
+不同的存储模型：
+```
+INSERT INTO instructor(ID, name, salary, dept_name)
+VALUES('5566', 'Mike', 60000, 'Music');
+
+SELECT * FROM instructor
+WHERE ID = '5566';
+
+SELECT COUNT(*)
+FROM instructor
+WHERE department = 'Music';
+```
+- 熟悉B+树、哈希等索引类型，能根据查询需求创建合适索引，通过执行计划分析索引命中情况提升查询性能。
+##### 哈希索引只支持等值操作符（=），不支持范围查询。
+使用哈希索引时，数据库只能高效地查找精确匹配的值，如：
+```
+SELECT * FROM Students WHERE ID = 1001;
+```
+但对于范围查询，如：
+```
+SELECT * FROM Students WHERE ID > 1000;
+```
+哈希索引无法发挥作用，效率很低，甚至可能退化为全表扫描。
+
+### 第十四周:存储、索引、查询及事务（下）
+学习内容：
+- 事务：指的是一组构成一个单一逻辑工作单元的操作集合。
+成果：
+- 理解ACID特性，掌握事务开启、提交、回滚操作，处理并发事务中的脏读、幻读等问题，保障数据一致性。
+事务具有以下四个关键特性，通常称为ACID原则：
+````
+原子性（Atomicity）： 事务中的所有操作要么全部完成，要么全部不执行，不会出现部分完成的情况。
+
+一致性（Consistency）： 事务执行前后，数据库必须保持一致的状态，满足所有定义的约束条件。
+
+隔离性（Isolation）： 并发执行的多个事务之间应相互隔离，一个事务的中间状态对其他事务不可见。
+
+持久性（Durability）： 一旦事务提交，其结果应永久保存，即使系统发生故障也不会丢失。
+```
 ## 2.作业与随堂测试（20/20）
   
 ### 本学期课程共布置八次课后作业，我均严格遵循作业要求与提交时间节点，在规定期限内完成并准时提交。每次作业从资料查阅、思路梳理到内容撰写、格式调整，均经过系统规划与细致执行，确保作业完成质量，在这一部分我给了自己满分。
